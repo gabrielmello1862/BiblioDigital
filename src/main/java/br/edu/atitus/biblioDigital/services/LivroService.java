@@ -20,14 +20,15 @@ public class LivroService {
     public List<Livro> findAll() {
         return repository.findAll();
     }
-    public List<Livro> findByTitulo(String parametro) {
+
+    public List<Livro> findByTitulo (String parametro) {
         if (parametro == null || parametro.isBlank())
             throw new RuntimeException("parametro invalido");
         return repository.findByTitulo(parametro);
     }
-    public List<Livro> findByAutor(String autor) {
+    public List<Livro> findByAutor (String autor) {
         if (autor == null || autor.isBlank())
             throw new RuntimeException("autor inválido");
-        return repository.findByAutor;
+        return repository.findByAutor(autor);
     }
 }

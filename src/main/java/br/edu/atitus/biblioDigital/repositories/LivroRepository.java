@@ -8,7 +8,7 @@ import java.util.List;
 
 
 public class LivroRepository {
-    private List<Livro> acervo = new ArrayList<>();
+    private final List<Livro> acervo = new ArrayList<>();
 
     public List<Livro> findAll() {
         return acervo;
@@ -28,7 +28,7 @@ public class LivroRepository {
         return resultado;
     }
 
-    public List<Livro> findByAutor(String autor) {
+    public List<Livro> findByAutor (String autor) {
         List<Livro> result = new ArrayList<>();
         for (Livro livro : acervo) {
             if (livro.getAutor().toUpperCase().contains(autor.toUpperCase())) {
