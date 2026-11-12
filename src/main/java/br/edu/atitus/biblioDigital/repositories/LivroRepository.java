@@ -1,11 +1,8 @@
 package br.edu.atitus.biblioDigital.repositories;
 
 import br.edu.atitus.biblioDigital.entities.Livro;
-
-
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class LivroRepository {
     private final List<Livro> acervo = new ArrayList<>();
@@ -18,6 +15,14 @@ public class LivroRepository {
         acervo.add(livro);
     }
 
+    public void alterar(int indice, Livro livroAtualizado) {
+        acervo.set(indice, livroAtualizado);
+    }
+
+    public void excluir(Livro livro) {
+        acervo.remove(livro);
+    }
+
     public List<Livro> findByTitulo(String parametro) {
         List<Livro> resultado = new ArrayList<>();
         for (Livro livro : acervo) {
@@ -28,14 +33,12 @@ public class LivroRepository {
         return resultado;
     }
 
-    public List<Livro> findByAutor (String autor) {
+    public List<Livro> findByAutor(String autor) {
         List<Livro> result = new ArrayList<>();
         for (Livro livro : acervo) {
             if (livro.getAutor().toUpperCase().contains(autor.toUpperCase())) {
                 result.add(livro);
-                    }
-
-
+            }
         }
         return result;
     }

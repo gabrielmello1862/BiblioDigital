@@ -37,6 +37,6 @@ public class Livro {
 
     @Override
     public String toString() {
-    return "Título: %s\nAutor: %s\nAno de Publicação: %d".formatted(titulo, autor, anoPublicacao);
+        return "Título: %s\nAutor: %s\nAno de Publicação: %d".formatted(titulo, autor, anoPublicacao);
     }
-    }
+}

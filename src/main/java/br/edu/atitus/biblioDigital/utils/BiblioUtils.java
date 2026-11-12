@@ -10,14 +10,15 @@ import java.util.List;
 public class BiblioUtils {
 
     public static final String MENU = """
-            ========== BIBLIODIGITAL ==========
+            ===== Bem vindo ao BiblioDigital =====
+            
+            Menu:
             1 - Cadastrar novo Livro
             2 - Pesquisar Livro por título
             3 - Pesquisar Livro por autor
             4 - Alterar dados do Livro
             5 - Excluir Livro
             0 - Sair
-            ===================================
             """;
 
     public static void cadastrarLivro(LivroService service) {
@@ -71,7 +72,7 @@ public class BiblioUtils {
         List<Livro> livrosEncontrados = service.findByTitulo(pesquisa);
 
         if (livrosEncontrados.isEmpty()) {
-            IO.println("Nenhum livro encontrado");
+            IO.println("Não existem resultados para a pesquisa realizada.\n");
         } else {
             for (Livro livro : livrosEncontrados) {
                 IO.println("------------------------------------");
@@ -87,7 +88,7 @@ public class BiblioUtils {
         List<Livro> autoresEncontrados = service.findByAutor(pesquisa);
 
         if (autoresEncontrados.isEmpty()) {
-            IO.println("Nenhum autor encontrado");
+            IO.println("Não existem resultados para a pesquisa realizada.\n");
         } else {
             for (Livro livro : autoresEncontrados) {
                 IO.println("------------------------------------");
@@ -102,61 +103,84 @@ public class BiblioUtils {
         List<Livro> livros = service.findAll();
 
         if (livros.isEmpty()) {
-            IO.println("Nenhum livro cadastrado no acervo.");
+            IO.println("Nenhum livro cadastrado no acervo.\n");
             return;
         }
 
-        IO.println("======= Livros cadastrados =======");
+        IO.println("===== Livros cadastrados =====");
         for (int i = 0; i < livros.size(); i++) {
             IO.println((i + 1) + " - " + livros.get(i).getTitulo());
         }
 
-        int livroEscolhido = Integer.parseInt(IO.readln("Informe o numero do livro que deseja alterar: "));
+        int livroEscolhido = Integer.parseInt(IO.readln("Informe o índice do livro que deseja alterar: "));
 
         if (livroEscolhido < 1 || livroEscolhido > livros.size()) {
-            IO.println("Numero Invalido!!");
+            IO.println("Índice inválido!\n");
             return;
         }
 
-        Livro livroSelecionado = livros.get(livroEscolhido - 1);
-        IO.println("\nDados atuais do livro:");
-        IO.println(livroSelecionado);
+        int indiceLista = livroEscolhido - 1;
+        Livro livroOriginal = livros.get(indiceLista);
 
-        String novoTitulo = IO.readln("Digite o novo titulo: ");
+        IO.println("\nDados atuais do livro:");
+        IO.println(livroOriginal);
+
+        String novoTitulo = IO.readln("Digite o novo título: ");
         String novoAutor = IO.readln("Digite o novo autor: ");
         int novoAno = Integer.parseInt(IO.readln("Digite o novo ano de publicação: "));
 
-        livroSelecionado.setTitulo(novoTitulo);
-        livroSelecionado.setAutor(novoAutor);
-        livroSelecionado.setAnoPublicacao(novoAno);
+        Livro livroAtualizado = null;
 
-        if (livroSelecionado instanceof LivroFisico) {
+        if (livroOriginal instanceof LivroFisico) {
             int novoExemplar = Integer.parseInt(IO.readln("Digite a nova quantidade de exemplares: "));
             String novaLoc = IO.readln("Digite a nova localização na biblioteca: ");
+            livroAtualizado = new LivroFisico(novoTitulo, novoAutor, novoAno, novoExemplar, novaLoc);
 
-            ((LivroFisico) livroSelecionado).setQuantidadeExemplares(novoExemplar);
-            ((LivroFisico) livroSelecionado).setLocalizacao(novaLoc);
-
-        } else if (livroSelecionado instanceof AudioLivro) {
+        } else if (livroOriginal instanceof AudioLivro) {
             String novoFormato = IO.readln("Digite o novo formato do áudio (ex: MP3, M4B): ");
             double novoTamanho = Double.parseDouble(IO.readln("Digite o novo tamanho em MB: "));
             int novaDuracao = Integer.parseInt(IO.readln("Digite a nova duração em minutos: "));
             String novoNarrador = IO.readln("Digite o novo nome do narrador: ");
+            livroAtualizado = new AudioLivro(novoTitulo, novoAutor, novoAno, novoFormato, novoTamanho, novaDuracao, novoNarrador);
 
-            ((AudioLivro) livroSelecionado).setFormato(novoFormato);
-            ((AudioLivro) livroSelecionado).setTamanhoArquivo(novoTamanho);
-            ((AudioLivro) livroSelecionado).setDuracao(novaDuracao);
-            ((AudioLivro) livroSelecionado).setNarrador(novoNarrador);
-
-        } else if (livroSelecionado instanceof LivroDigital) {
+        } else if (livroOriginal instanceof LivroDigital) {
             String novoFormato = IO.readln("Digite o novo formato do arquivo (ex: PDF, EPUB): ");
             double novoTamanho = Double.parseDouble(IO.readln("Digite o novo tamanho em MB: "));
-
-            ((LivroDigital) livroSelecionado).setFormato(novoFormato);
-            ((LivroDigital) livroSelecionado).setTamanhoArquivo(novoTamanho);
+            livroAtualizado = new LivroDigital(novoTitulo, novoAutor, novoAno, novoFormato, novoTamanho);
         }
 
-        service.alterar(livroSelecionado);
+        service.alterar(indiceLista, livroOriginal, livroAtualizado);
         IO.println("Livro alterado com sucesso!\n");
+    }
+
+    public static void excluirLivro(LivroService service) {
+        List<Livro> livros = service.findAll();
+
+        if (livros.isEmpty()) {
+            IO.println("Nenhum livro cadastrado no acervo.\n");
+            return;
+        }
+
+        IO.println("===== Livros cadastrados =====");
+        for (int i = 0; i < livros.size(); i++) {
+            IO.println((i + 1) + " - " + livros.get(i).getTitulo());
+        }
+
+        int livroEscolhido = Integer.parseInt(IO.readln("Informe o índice do livro que deseja excluir: "));
+
+        if (livroEscolhido < 1 || livroEscolhido > livros.size()) {
+            IO.println("Índice inválido!\n");
+            return;
+        }
+
+        Livro livroSelecionado = livros.get(livroEscolhido - 1);
+        String confirmacao = IO.readln("Confirma a exclusão do livro \"" + livroSelecionado.getTitulo() + "\"? (S/N): ");
+
+        if (confirmacao.trim().equalsIgnoreCase("S")) {
+            service.excluir(livroSelecionado);
+            IO.println("Livro excluído com sucesso!\n");
+        } else {
+            IO.println("Operação cancelada.\n");
+        }
     }
 }
