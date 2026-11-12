@@ -7,7 +7,7 @@ import br.edu.atitus.biblioDigital.entities.LivroFisico;
 import br.edu.atitus.biblioDigital.repositories.LivroRepository;
 import java.util.List;
 
-public class LivroService {
+public final class LivroService {
     private final LivroRepository repository = new LivroRepository();
 
     private void validarDados(Livro livro, Livro livroIgnoradoNaDuplicidade) {

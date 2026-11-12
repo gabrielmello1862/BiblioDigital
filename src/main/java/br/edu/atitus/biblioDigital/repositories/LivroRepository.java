@@ -4,7 +4,7 @@ import br.edu.atitus.biblioDigital.entities.Livro;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LivroRepository {
+public final  class LivroRepository {
     private final List<Livro> acervo = new ArrayList<>();
 
     public List<Livro> findAll() {

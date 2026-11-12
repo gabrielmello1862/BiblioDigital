@@ -1,6 +1,6 @@
 package br.edu.atitus.biblioDigital.entities;
 
-public class LivroDigital extends Livro {
+public final class LivroDigital extends Livro {
     private String formato;
     private double tamanhoArquivo;
 

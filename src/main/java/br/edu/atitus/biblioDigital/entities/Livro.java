@@ -1,6 +1,6 @@
 package br.edu.atitus.biblioDigital.entities;
 
-public class Livro {
+public abstract class Livro {
     private String titulo;
     private String autor;
     private int anoPublicacao;

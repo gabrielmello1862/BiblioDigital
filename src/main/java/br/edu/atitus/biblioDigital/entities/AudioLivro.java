@@ -1,6 +1,6 @@
 package br.edu.atitus.biblioDigital.entities;
 
-public class AudioLivro extends LivroDigital {
+public final class AudioLivro extends LivroDigital {
     private int duracao;
     private String narrador;
 

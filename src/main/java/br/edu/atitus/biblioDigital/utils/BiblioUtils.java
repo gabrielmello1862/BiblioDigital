@@ -7,7 +7,7 @@ import br.edu.atitus.biblioDigital.entities.LivroFisico;
 import br.edu.atitus.biblioDigital.services.LivroService;
 import java.util.List;
 
-public class BiblioUtils {
+public final class BiblioUtils {
 
     public static final String MENU = """
             ===== Bem vindo ao BiblioDigital =====
